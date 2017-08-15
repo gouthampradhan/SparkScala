@@ -18,16 +18,27 @@ object WordCount {
     //The hard way
     line.flatMap(x => x.split("\\W+"))
       .map(x => x.toLowerCase)
-      .map(x => (x, 1))
-      .reduceByKey((x, y) => x + y)
-      .map(x => (x._2, x._1))
-      .sortByKey()
-      .map(x => (x._2, x._1))
-      .collect()
+      .filter(stopWords) //filter by common stop words
+      .map(x => (x, 1)) // map each word to 1
+      .reduceByKey((x, y) => x + y) //sum up the values by each key
+      .map(x => (x._2, x._1)) //swap pairs
+      .sortByKey() //sort by key
+      .map(x => (x._2, x._1)) //swap back
+      .collect() //collect and print
       .foreach(println)
 
     //The easy and simple way
     //val count = line.flatMap(x => x.split("\\W+")).countByValue()
 
   }
+
+  /**
+    * Common stop words to be used as filter
+    * @param word
+    * @return
+    */
+  def stopWords(word: String) = {
+    word != "is" && word != "and" && word != "the" && word != "to" && word != "for" && word != "it" && word != "in"
+  }
+
 }
