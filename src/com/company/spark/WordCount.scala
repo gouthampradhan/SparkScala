@@ -5,6 +5,7 @@ import org.apache.spark.SparkContext
 
 /**
   * Created by gouthamvidyapradhan on 15/08/2017.
+  * Word count
   */
 object WordCount {
   def main(args: Array[String]) {
