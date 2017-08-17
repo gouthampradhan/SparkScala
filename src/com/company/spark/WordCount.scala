@@ -29,7 +29,8 @@ object WordCount {
       .foreach(println)
 
     //The easy and simple way
-    //val count = line.flatMap(x => x.split("\\W+")).countByValue()
+    /*val count = line.flatMap(x => x.split("\\W+")).countByValue()
+    count.toSeq.sortBy(_._2).foreach(println)*/
 
   }
 
