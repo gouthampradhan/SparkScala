@@ -9,7 +9,7 @@ import org.apache.spark.SparkContext
 object MostPopularSuperHero {
 
   def countChildren(line: String) = {
-    val elements = line.split("\\s+");
+    val elements = line.split("\\s+")
     (elements(0).toInt, elements.length - 1)
   }
 
@@ -35,11 +35,15 @@ object MostPopularSuperHero {
     val names = sc.textFile("../SparkScala/src/resources/Marvel-names.txt")
                   .flatMap(parseName)
 
-    val mostPopular = graph.reduceByKey((x, y) => x + y).map(x => (x._2, x._1)).max()
+    val mostPopular = graph.reduceByKey((x, y) => x + y).map(x => (x._2, x._1)) //there can be multiple occurrences of
+    //same super hero id, hence reduce by key
 
-    val mostPopularSuperHero = names.lookup(mostPopular._2)(0)
+    val mostPopularSuperHero = names.lookup(mostPopular.max()._2)(0)
 
-    println(s"$mostPopularSuperHero is the most popular super hero with ${mostPopular._1} connections")
+    println(s"$mostPopularSuperHero is the most popular super hero with ${mostPopular.max()._1} connections")
+
+    println("Top 10 most popular super-heros are...")
+    mostPopular.sortByKey().top(10).foreach(x => println(names.lookup(x._2)(0)))
 
   }
 }
